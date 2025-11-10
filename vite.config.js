@@ -1,16 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
-// export default defineConfig({
-//   plugins: [react()],
-// })
 
-
-export default {
+export default defineConfig({
+  plugins: [react()],
+  base: '/booking-system/', //  important for GitHub Pages routing
   server: {
     proxy: {
-      '/api': 'https://booking-system-lomz.onrender.com'
+      '/api': {
+        target: 'https://booking-system-lomz.onrender.com',
+        changeOrigin: true,
+        secure: true
+      }
     }
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false
   }
-};
+})
