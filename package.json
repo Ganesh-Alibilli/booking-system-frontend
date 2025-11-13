@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "homepage":"https://ganeshalibilli.github.io/booking-system/",
+  "homepage": "https://ganesh-alibilli.github.io/booking-system-frontend/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,6 +13,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "lucide-react": "^0.553.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 
 function getDates(startDate, days = 4) {
@@ -61,26 +60,26 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
             background: #2196F3;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 13px;
             padding: 8px 0;
             cursor: pointer;
-            font-weight: normal;
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.06);
-            transition: box-shadow 0.15s, background 0.15s;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
           }
           .booking-slot-btn:hover, .booking-slot-btn:focus {
             background: orange !important;
             color: white !important;
-            box-shadow: 0 2px 10px 0 rgba(255,140,0,0.15), 0 2px 7px 0 rgba(0,0,0,0.09);
+            transform: scale(1.03);
             outline: none;
           }
-          .booking-slot-btn.selected, .booking-slot-btn.selected:focus {
+          .booking-slot-btn.selected {
             background: orange !important;
             color: white !important;
             font-weight: bold;
-            box-shadow: 0 2px 12px 0 rgba(255,160,0,0.18);
-            outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 2px 12px rgba(255,160,0,0.18);
           }
           .booking-slot-more-btn {
             width: 100%;
@@ -88,23 +87,40 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
             background: #1580C4;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 12px;
             padding: 7px 0;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.04);
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+          }
+          .booking-slot-more-btn:hover {
+            background: #0d6ead;
           }
           .slot-col {
             background: #f8fafd;
-            border-radius: 7px;
-            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
-            padding: 10px 7px;
-            min-width: 120px;
-            max-width: 150px;
-            height: auto;
-            margin-bottom: 10px;
-            margin-top: 6px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 12px 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+          }
+          .slot-col:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+          }
+          .slot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            width: 100%;
+          }
+          @media (max-width: 768px) {
+            .slot-grid {
+              grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+              gap: 14px;
+            }
           }
         `}
       </style>
@@ -120,9 +136,27 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
       >
         {/* Left: Booking Info and Date Picker */}
         <div>
-          <button onClick={onBack}>⬅ Back</button>
-          <h2>{service?.Title || "Booking System"}</h2>
-          <p>{service?.Description}</p>
+          <button
+            onClick={onBack}
+            style={{
+              border: "1px solid #007bff",
+              background: "transparent",
+              color: "#007bff",
+              borderRadius: 8,
+              padding: "6px 12px",
+              cursor: "pointer",
+              fontWeight: 500,
+              marginBottom: 10,
+            }}
+          >
+            ← Back
+          </button>
+          <h2 style={{ color: "#111", marginBottom: "10px" }}>
+            {service?.Title || "Booking System"}
+          </h2>
+          <p style={{ color: "#555", marginBottom: "20px" }}>
+            {service?.Description}
+          </p>
           <label>
             <b>Select starting date:</b>
             <br />
@@ -133,9 +167,10 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
               style={{
                 marginTop: 8,
                 fontSize: 16,
-                padding: "4px 8px",
-                borderRadius: 4,
+                padding: "6px 8px",
+                borderRadius: 6,
                 border: "1px solid #bbb",
+                outline: "none",
               }}
             />
           </label>
@@ -147,15 +182,9 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
         </div>
 
         {/* Right: Slot Selection Grid */}
-        <div>
+        <div style={{ width: "100%" }}>
           {visibleDates.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                gap: 18,
-                flexWrap: "wrap",
-              }}
-            >
+            <div className="slot-grid">
               {visibleDates.map((date) => {
                 const dayKey = date.toDateString();
                 const allSlots = slotsMap[dayKey] || [];
@@ -172,8 +201,8 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
                         borderBottom: "2px solid #eee",
                         textAlign: "center",
                         fontSize: 15,
-                        marginBottom: 1,
-                        letterSpacing: "0.5px",
+                        marginBottom: 6,
+                        paddingBottom: 4,
                       }}
                     >
                       {date
@@ -185,7 +214,6 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
                           fontWeight: 400,
                           color: "#a4a4a4",
                           fontSize: 13,
-                          letterSpacing: "0.2px",
                         }}
                       >
                         {date.toISOString().slice(0, 10)}
@@ -198,7 +226,7 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
                         selectedSlot.date === dayKey &&
                         selectedSlot.time === slot.time;
 
-                      // 🔹 Calculate endTime dynamically
+                      // Calculate endTime dynamically
                       const [h, m] = slot.time.split(":").map(Number);
                       const duration = service?.Duration || 30;
                       const endDate = new Date(2000, 0, 1, h, m);
@@ -220,7 +248,7 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
                               time: slot.time,
                             });
 
-                            // ✅ Send both start & end time up
+                            // Send both start & end time up
                             onSelectSlot({
                               date: date.toISOString().slice(0, 10),
                               startTime: slot.time,
@@ -271,4 +299,3 @@ export default function ServiceDetails({ service, onSelectSlot, onBack }) {
     </>
   );
 }
-
